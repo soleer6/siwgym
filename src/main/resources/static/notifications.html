@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8" />
+    <title>Notifications</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        h1 {
+            margin-bottom: 10px;
+        }
+        .top-bar {
+            margin-bottom: 20px;
+        }
+        .top-bar span {
+            margin-right: 15px;
+            font-weight: bold;
+        }
+        .button {
+            margin-left: 10px;
+            padding: 6px 12px;
+            border: 1px solid #333;
+            background-color: #f5f5f5;
+            cursor: pointer;
+            border-radius: 4px;
+        }
+        .button:hover {
+            background-color: #e0e0e0;
+        }
+        .section {
+            margin-top: 20px;
+        }
+        .section h2 {
+            margin-bottom: 10px;
+        }
+        .notification {
+            border: 1px solid #ccc;
+            padding: 10px;
+            margin-bottom: 8px;
+            border-radius: 4px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .notification.unread {
+            background-color: #fffefa;
+        }
+        .notification.read {
+            background-color: #f9f9f9;
+            color: #666;
+        }
+        .notif-text {
+            flex: 1;
+        }
+        .notif-meta {
+            font-size: 0.9em;
+            color: #888;
+            margin-top: 4px;
+        }
+        .mark-button {
+            margin-left: 15px;
+            padding: 4px 8px;
+            border: 1px solid #007bff;
+            background-color: #007bff;
+            color: white;
+            cursor: pointer;
+            border-radius: 4px;
+        }
+        .mark-button:hover {
+            background-color: #0056b3;
+        }
+        #noUnread, #noRead {
+            font-style: italic;
+            color: #777;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Notifications</h1>
+
+    <div class="top-bar">
+        <span>User: <strong><span id="usernameDisplay"></span></strong></span>
+        <span>Role: <strong><span id="roleDisplay"></span></strong></span>
+        <button class="button" id="backBtn">← Back</button>
+        <button class="button" id="logoutBtn">Logout</button>
+    </div>
+
+    <!-- Sección “Unread Notifications” -->
+    <div class="section" id="unreadSection">
+        <h2>Unread Notifications</h2>
+        <div id="unreadList">
+            <!-- Aquí irán las notificaciones sin leer -->
+            <p id="noUnread">You have no unread notifications.</p>
+        </div>
+    </div>
+
+    <!-- Sección “Read Notifications” -->
+    <div class="section" id="readSection">
+        <h2>Read Notifications</h2>
+        <div id="readList">
+            <!-- Aquí irán las notificaciones leídas -->
+            <p id="noRead">You have no read notifications.</p>
+        </div>
+    </div>
+
+    <script src="js/notifications.js"></script>
+</body>
+</html>

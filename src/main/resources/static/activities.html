@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <title>Activities</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        h1 {
+            margin-bottom: 10px;
+        }
+        /* Estilos de la tabla principal */
+        table.activities-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+        table.activities-table th,
+        table.activities-table td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        table.activities-table th {
+            background-color: #f2f2f2;
+        }
+        table.activities-table tr:nth-child(even) {
+            background-color: #fafafa;
+        }
+        table.activities-table tr:hover {
+            background-color: #f1f1f1;
+        }
+        table.activities-table button {
+            padding: 4px 8px;
+            font-size: 0.9em;
+            cursor: pointer;
+        }
+
+        /* Contenedor de cabecera de usuario + navegación + logout */
+        .user-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+        .user-header .user-info {
+            font-size: 0.9em;
+        }
+        .user-header .nav-links a {
+            margin-left: 12px;
+            text-decoration: none;
+            color: #007bff;
+            font-size: 0.9em;
+        }
+        .user-header .nav-links a:hover {
+            text-decoration: underline;
+        }
+        .user-header button {
+            padding: 6px 12px;
+            cursor: pointer;
+        }
+
+        /* Estilos mínimos para el modal y su fondo semitransparente */
+        #infoModalBackground {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.4);
+            z-index: 1000;
+        }
+        #infoModal {
+            display: none;
+            position: fixed;
+            top: 10%;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80%;
+            max-width: 700px;
+            max-height: 80%;
+            background: #fff;
+            border-radius: 4px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+            padding: 20px;
+            overflow-y: auto;
+            z-index: 1001;
+        }
+        #infoModal h3 {
+            margin-top: 0;
+        }
+        #infoModal ul {
+            margin: 0 0 10px 20px;
+        }
+        #infoModal button {
+            padding: 6px 12px;
+            margin-top: 10px;
+            cursor: pointer;
+        }
+        #infoModal .close-btn {
+            background: #e74c3c;
+            color: #fff;
+            border: none;
+            border-radius: 2px;
+        }
+        #infoModal .sign-up-btn {
+            background: #2ecc71;
+            color: #fff;
+            border: none;
+            border-radius: 2px;
+            margin-left: 8px;
+        }
+        /* Mensaje de permiso denegado */
+        .no-permission {
+            font-style: italic;
+            color: #777;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Activities</h1>
+
+    <!-- Cabecera con usuario, navegación y botón de logout -->
+    <div class="user-header">
+        <div class="user-info">
+            User: <strong><span id="usernameDisplay"></span></strong>
+            |
+            Role: <strong><span id="roleDisplay"></span></strong>
+        </div>
+        <div class="nav-links">
+            <a href="activities.html">Activities</a>
+            <a href="notifications.html">Notifications</a>
+            <button id="logout">Logout</button>
+        </div>
+    </div>
+
+    <!-- Contenido dinámico (aquí se insertará la tabla o el mensaje de error) -->
+    <div id="content"></div>
+
+    <!-- Fondo semitransparente para el modal -->
+    <div id="infoModalBackground"></div>
+
+    <!-- Modal de información detallada de una actividad -->
+    <div id="infoModal">
+        <div id="modalContent"></div>
+        <button class="close-btn" onclick="closeModal()">Close</button>
+    </div>
+
+    <!-- Incluir el script de Activities -->
+    <script src="js/activities.js"></script>
+</body>
+</html>

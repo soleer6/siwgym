@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Gym Management ‒ Admin Panel</title>
+  <style>
+    /* --------------- Reset Mínimo --------------- */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+    html, body {
+      height: 100%;
+      background: #f5f7fa;
+    }
+
+    /* ---------- Contenedor Principal ---------- */
+    .container {
+      width: 90%;
+      max-width: 1200px;
+      margin: 20px auto;
+    }
+    h1 {
+      margin-bottom: 16px;
+      color: #333;
+    }
+
+    /* ----- Cabecera con usuario / pestañas ----- */
+    .top-menu {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+    .top-menu .user-info {
+      font-size: 0.95rem;
+      color: #555;
+    }
+    .tabs {
+      display: flex;
+      gap: 12px;
+    }
+    .tabs button {
+      padding: 8px 16px;
+      font-size: 0.95rem;
+      border: none;
+      background-color: #007bff;
+      color: #fff;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: background-color 0.2s ease;
+    }
+    .tabs button.active {
+      background-color: #0056b3;
+    }
+    .tabs button:hover {
+      background-color: #0056b3;
+    }
+    .top-menu .buttons-group button,
+    .top-menu .buttons-group a {
+      margin-left: 12px;
+      padding: 6px 12px;
+      font-size: 0.9em;
+      border: none;
+      background-color: #6c757d;
+      color: #fff;
+      border-radius: 4px;
+      text-decoration: none;
+      cursor: pointer;
+      transition: background-color 0.2s ease;
+    }
+    .top-menu .buttons-group button:hover,
+    .top-menu .buttons-group a:hover {
+      background-color: #5a6268;
+    }
+
+    /* ------------- Secciones (ocultar/mostrar) ------------- */
+    .section {
+      margin-top: 24px;
+      background: #fff;
+      border-radius: 6px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      padding: 20px;
+      display: none;
+    }
+    .section.active {
+      display: block;
+    }
+    .section h2 {
+      margin-bottom: 14px;
+      color: #2c3e50;
+      font-size: 1.3rem;
+    }
+
+    /* ----------- Formulario Actividad ----------- */
+    .form-group {
+      margin-bottom: 16px;
+    }
+    .form-group label {
+      display: block;
+      margin-bottom: 6px;
+      color: #444;
+      font-size: 0.95rem;
+    }
+    .form-group input[type="text"],
+    .form-group input[type="number"],
+    .form-group input[type="datetime-local"],
+    .form-group select {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      transition: border-color 0.2s;
+    }
+    .form-group input:focus,
+    .form-group select:focus {
+      outline: none;
+      border-color: #007bff;
+    }
+    .section form button {
+      background-color: #28a745;
+      color: #fff;
+      border: none;
+      padding: 10px 16px;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: background-color 0.2s;
+    }
+    .section form button:hover {
+      background-color: #218838;
+    }
+
+    /* ----------- Tabla de Actividades ----------- */
+    table.activities-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 10px;
+    }
+    table.activities-table th,
+    table.activities-table td {
+      border: 1px solid #ddd;
+      padding: 8px;
+      text-align: left;
+    }
+    table.activities-table th {
+      background-color: #f2f2f2;
+    }
+    table.activities-table tr:nth-child(even) {
+      background-color: #fafafa;
+    }
+    table.activities-table tr:hover {
+      background-color: #f1f1f1;
+    }
+    table.activities-table button {
+      padding: 4px 8px;
+      font-size: 0.9em;
+      cursor: pointer;
+      margin-right: 4px;
+    }
+
+    /* ----------- Modal Info Actividad ----------- */
+    #activityModalBackground {
+      display: none;
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: rgba(0,0,0,0.4);
+      z-index: 1000;
+    }
+    #activityModal {
+      display: none;
+      position: fixed;
+      top: 10%;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 80%;
+      max-width: 600px;
+      max-height: 80%;
+      background: #fff;
+      border-radius: 4px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+      padding: 20px;
+      overflow-y: auto;
+      z-index: 1001;
+    }
+    #activityModal h3 {
+      margin-top: 0;
+      color: #2c3e50;
+    }
+    #activityModal ul {
+      margin-left: 20px;
+      margin-bottom: 12px;
+    }
+    #activityModal .close-btn {
+      background: #e74c3c;
+      color: #fff;
+      border: none;
+      padding: 8px 14px;
+      border-radius: 3px;
+      cursor: pointer;
+      transition: background-color 0.2s ease;
+    }
+    #activityModal .close-btn:hover {
+      background-color: #c0392b;
+    }
+
+    /* ----------- Sección Offers ----------- */
+    .offers-form {
+      max-width: 500px;
+    }
+    .offers-form .form-group {
+      margin-bottom: 16px;
+    }
+    .offers-form button {
+      background-color: #ffc107;
+      color: #212529;
+      border: none;
+      padding: 10px 16px;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: background-color 0.2s;
+    }
+    .offers-form button:hover {
+      background-color: #e0a800;
+    }
+
+    /* ----------- Sección Informes ----------- */
+    .reports-table {
+      width: 80%;
+      max-width: 700px;
+      border-collapse: collapse;
+      margin-top: 8px;
+    }
+    .reports-table th,
+    .reports-table td {
+      border: 1px solid #ddd;
+      padding: 8px;
+    }
+    .reports-table th {
+      background-color: #f2f2f2;
+    }
+    .reports-table tr:nth-child(even) {
+      background-color: #fafafa;
+    }
+    .reports-table tr:hover {
+      background-color: #f1f1f1;
+    }
+
+    /* ----------- Para generar inputs de sesiones ---------- */
+    .sessions-container {
+      margin-top: 12px;
+      padding: 10px;
+      border: 1px dashed #ccc;
+      border-radius: 4px;
+      background: #fafafa;
+    }
+    .session-item {
+      margin-bottom: 12px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Admin Panel</h1>
+
+    <div class="top-menu">
+      <div class="user-info">
+        User: <strong><span id="usernameDisplay"></span></strong>
+        |
+        Role: <strong><span id="roleDisplay"></span></strong>
+      </div>
+      <div class="tabs">
+        <button id="tabActivities" class="active">Activities</button>
+        <button id="tabOffers">Offers</button>
+        <button id="tabReports">Reports</button>
+      </div>
+      <div class="buttons-group">
+        <button id="logoutBtn">Logout</button>
+      </div>
+    </div>
+
+    <!-- =================== Sección Activities =================== -->
+    <div class="section active" id="activitiesSection">
+      <h2>Manage Activities</h2>
+
+      <!-- Formulario para crear o editar -->
+      <form id="activityForm">
+        <input type="hidden" id="activityId" value="" />
+
+        <div class="form-group">
+          <label for="activityName">Name</label>
+          <input type="text" id="activityName" placeholder="Activity name" required />
+        </div>
+        <div class="form-group">
+          <label for="activityDescription">Description</label>
+          <input type="text" id="activityDescription" placeholder="Description" required />
+        </div>
+        <div class="form-group">
+          <label for="activityDateTime">Date &amp; Time</label>
+          <input type="datetime-local" id="activityDateTime" required />
+        </div>
+        <div class="form-group">
+          <label for="activityMaxCapacity">Max Capacity</label>
+          <input type="number" id="activityMaxCapacity" min="1" placeholder="e.g. 10" required />
+        </div>
+        <div class="form-group">
+          <label for="activityPrice">Price</label>
+          <input type="number" id="activityPrice" min="0" step="0.01" placeholder="e.g. 5.00" required />
+        </div>
+        <div class="form-group">
+          <label for="activityMonitor">Monitor</label>
+          <select id="activityMonitor" required>
+            <option value="">Loading monitors…</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="sessionsCount">Number of Sessions</label>
+          <input type="number" id="sessionsCount" min="1" value="1" />
+        </div>
+        <!-- Aquí se generarán dinámicamente los inputs de cada sesión -->
+        <div id="sessionsContainer" class="sessions-container">
+          <!-- “session-item” se duplica según # de sesiones -->
+        </div>
+
+        <button type="submit" id="saveActivityBtn">Create Activity</button>
+      </form>
+
+      <!-- Tabla de Actividades Existentes -->
+      <table class="activities-table" id="activitiesTable">
+        <thead>
+          <tr>
+            <th>ID</th><th>Name</th><th>Description</th><th>Date/Time</th>
+            <th>Capacity</th><th>Price</th><th>Monitor</th><th>Room</th><th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- Se llena dinámicamente -->
+        </tbody>
+      </table>
+    </div>
+    <!-- ============================================================== -->
+
+    <!-- =================== Sección Offers =================== -->
+    <div class="section" id="offersSection">
+      <h2>Create Offer</h2>
+      <form id="offerForm" class="offers-form">
+        <div class="form-group">
+          <label for="offerActivity">Select Activity</label>
+          <select id="offerActivity" required>
+            <option value="">Loading activities…</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="offerDiscount">Discount (%)</label>
+          <input type="number" id="offerDiscount" min="1" max="100" placeholder="e.g. 20" required />
+        </div>
+        <div class="form-group">
+          <label for="offerEndsAt">Offer Ends At</label>
+          <input type="datetime-local" id="offerEndsAt" required />
+        </div>
+        <button type="submit">Apply Offer</button>
+      </form>
+    </div>
+    <!-- ============================================================== -->
+
+    <!-- =================== Sección Reports =================== -->
+    <div class="section" id="reportsSection">
+      <h2>Revenue Reports</h2>
+
+      <!-- Ingreso Total -->
+      <div>
+        <strong>Total Revenue:</strong>
+        <span id="totalRevenueDisplay">Loading...</span>
+      </div>
+
+      <!-- Tabla de ingresos mensuales -->
+      <div style="margin-top: 20px;">
+        <h3>Monthly Revenue</h3>
+        <table class="reports-table" id="monthlyRevenueTable">
+          <thead><tr><th>Month</th><th>Revenue</th></tr></thead>
+          <tbody>
+            <!-- Se llena dinámicamente -->
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Tabla de ingresos por actividad -->
+      <div style="margin-top: 20px;">
+        <h3>Revenue by Activity</h3>
+        <table class="reports-table" id="activityRevenueTable">
+          <thead><tr><th>Activity</th><th>Revenue</th></tr></thead>
+          <tbody>
+            <!-- Se llena dinámicamente -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <!-- ============================================================== -->
+
+  </div>
+
+  <!-- Modal para ver info detallada de actividad -->
+  <div id="activityModalBackground"></div>
+  <div id="activityModal">
+    <div id="modalContent"></div>
+    <button class="close-btn" onclick="closeActivityModal()">Close</button>
+  </div>
+
+  <script src="js/admin.js"></script>
+</body>
+</html>
