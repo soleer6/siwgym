@@ -1,41 +1,42 @@
-# Gym Management System
+# SIW Gym Management
 
-## Overview
+A full-stack web application for managing gym activities, built with Spring Boot (Java) back-end and vanilla JavaScript/HTML front-end.
 
-A full-stack web application for managing gym activities, built with Spring Boot (Java) back-end and vanilla JavaScript/HTML front-end. Supports three user roles: Admin, Monitor, and Client.
+## Features
 
-## Key Features
+- **Role-Based Access**  
+  - **Admin**: create/edit activities & sessions, apply offers, view revenue reports  
+  - **Monitor**: view assigned activities & sessions (mini-calendar)  
+  - **Client**: browse activities, view details, sign up  
 
-* **Role-Based Access**: Admins manage activities and offers; Monitors oversee assigned activities; Clients browse, view, and sign up.
-* **Activity Scheduling**: Create activities composed of multiple sessions, each with its own room.
-* **Client Registration**: Clients can sign up for sessions until capacity is reached, with notifications.
-* **Notifications**: Automated notifications for new activities, sign-ups, and full capacity.
-* **Revenue Reporting**: Total and monthly revenue reports, plus revenue by activity.
+- **Authentication & Security**  
+  - Session-based login/register via `/api/auth/login` and `/api/auth/register`  
+  - Passwords hashed with BCrypt  
+  - Spring Security protects REST endpoints; CSRF disabled only on auth endpoints  
 
-## Architecture
+- **Activity Scheduling**  
+  - Each activity consists of one or more sessions  
+  - Sessions have individual room assignments and capacity enforcement  
 
-* **Spring Boot**: REST API controllers for authentication, activities, sessions, offers, and reports.
-* **JPA / Hibernate**: Entity mappings for User, Room, Activity, Session, Registration, Notification; H2 file-based persistence with `AUTO_SERVER`.
-* **Spring Security**: HTTP session-based authentication and role checks.
-* **Front-End**: HTML/CSS for structure and styling, and JavaScript for dynamic UI, form handling, and API calls.
-s
-## Default Credentials
+- **Notifications**  
+  - Automatic notifications on new activities and full sessions  
+  - Managed via `/api/notifications`  
 
-* **Admin**: username `admin`, password `password`
-* **Monitor**: `monitor1`, `monitor2`, `monitor3` / `password`
-* **Client**: `client1`, `client2`, `client3` / `password`
+- **Offers & Revenue Reports**  
+  - Admin can set percentage discounts with expiration  
+  - Reports include total revenue, monthly breakdown, and revenue by activity  
 
-## Project Structure
+## Tech Stack
 
-* `src/main/java/.../domain`: JPA entities.
-* `src/main/java/.../repository`: Spring Data repositories.
-* `src/main/java/.../service`: Business logic.
-* `src/main/java/.../controller`: REST API endpoints.
-* `src/main/resources/static`: HTML and JS front-end.
+- **Spring Boot** (Java)  
+- **Spring Security** (HTTP sessions + BCrypt)  
+- **Spring Data JPA** with H2 file-based DB (`data/siwgym.mv.db`)  
+- **Vanilla JavaScript/HTML/CSS** front-end  
 
-## Further Reading
+## Quick Start
 
-* **Application.properties** configures H2, JPA, and security.
-* **DataLoader** seeds initial data on startup.
-* **SecurityConfig** defines access rules.
-
+1. **Clone & Run**  
+   ```bash
+   git clone https://github.com/your-username/siwgym.git
+   cd siwgym
+   ./mvnw spring-boot:run
